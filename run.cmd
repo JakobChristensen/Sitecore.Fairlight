@@ -1,0 +1,1 @@
+browser-sync start --server --startPath /sitecore/shell/client/apps/AllCampaignActivity/AllCampaignActivity.html --files "sitecore/**/*"
