@@ -4,8 +4,8 @@ import { createStore } from 'redux';
 import DataGrid from 'react-datagrid';
 import * as Bootstrap from 'react-bootstrap';
 
-import * as Speak from '../../components/bcl-speak/bcl-speak';
 import ListPage from '../../components/bcl-pages/ListPage';
+import * as Speak from '../../components/bcl-speak/bcl-speak';
 
 // initial data
 var model = {

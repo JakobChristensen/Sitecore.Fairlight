@@ -2087,13 +2087,13 @@ var _reactBootstrap = require('react-bootstrap');
 
 var Bootstrap = _interopRequireWildcard(_reactBootstrap);
 
-var _bclSpeak = require('../../components/bcl-speak/bcl-speak');
-
-var Speak = _interopRequireWildcard(_bclSpeak);
-
 var _ListPage = require('../../components/bcl-pages/ListPage');
 
 var _ListPage2 = _interopRequireDefault(_ListPage);
+
+var _bclSpeak = require('../../components/bcl-speak/bcl-speak');
+
+var Speak = _interopRequireWildcard(_bclSpeak);
 
 function _interopRequireWildcard(obj) {
     if (obj && obj.__esModule) {
