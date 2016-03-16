@@ -1,1 +1,1 @@
-browser-sync start --server --startPath /sitecore/shell/client/apps/AllCampaignActivity/ --files "sitecore/**/*"
+browser-sync start --server --startPath /sitecore/shell/client/apps/LaunchPad/ --files "sitecore/**/*"
