@@ -130,17 +130,26 @@ var LaunchPad = _react2.default.createClass({
     displayName: 'LaunchPad',
 
     componentDidMount: function componentDidMount() {
-        this.serverRequest = $.get("http://pathfinder/cd/core/items/sitecore/client/Applications/Launchpad/PageSettings/Buttons", { token: "1", levels: "2", fields: "Text, Icon, Link" }, function (result) {
+        var data = {
+            "TitleText": "/cd/core/items/sitecore/client/Applications/Launchpad/PageSettings/TitleText?fields=Text",
+            "Buttons": "/cd/core/items/sitecore/client/Applications/Launchpad/PageSettings/Buttons?levels=2&fields=Text, Icon[icon48x48], Link[url]"
+        };
+
+        this.serverRequest = $.post("http://pathfinder/cd/bundle?token=test", data, function (result) {
             this.setState(result);
         }.bind(this));
     },
 
     render: function render() {
+        if (this.state == null) {
+            return null;
+        }
+
         var grids = this.getButtons(this.state);
 
         var output = this.renderGrids(grids);
 
-        return _react2.default.createElement(_Dashboard2.default, { id: 'LaunchPad', applicationHeader: 'Sitecore Experience Management' }, output);
+        return _react2.default.createElement(_Dashboard2.default, { id: 'LaunchPad', applicationHeader: this.state.TitleText.fields.Text }, _react2.default.createElement('div', { className: 'sc-launchpad' }, output));
     },
 
     renderGrids: function renderGrids(grids) {
@@ -181,24 +190,21 @@ var LaunchPad = _react2.default.createClass({
     },
 
     renderItem: function renderItem(item) {
-        var icon = item.largeIcon;
-        var text = item.fields[0].value;
-        var href = item.fields[2].value;
+        var icon = item.fields.Icon;
+        var text = item.fields.Text;
+        var href = item.fields.Link;
 
         return _react2.default.createElement('a', { href: href, className: 'sc-launchpad-item', title: text }, _react2.default.createElement('span', { className: 'icon' }, _react2.default.createElement('img', { src: icon, width: '48', height: '48', alt: text })), _react2.default.createElement('span', { className: 'sc-launchpad-text' }, text));
     },
 
     getButtons: function getButtons(state) {
-        if (state == null) {
-            return null;
-        }
-
+        var buttons = state.Buttons;
         var grids = [];
 
-        for (var groupIndex = 0; groupIndex < state.children.length; groupIndex++) {
+        for (var groupIndex = 0; groupIndex < buttons.children.length; groupIndex++) {
             var grid = [];
 
-            var group = state.children[groupIndex];
+            var group = buttons.children[groupIndex];
             var groupCount = group.children.length;
 
             var width = groupCount % 3 == 0 ? Math.round(groupCount / 3) : Math.round(groupCount / 3) + 1;
