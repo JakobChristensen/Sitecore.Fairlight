@@ -38,7 +38,7 @@ var store = createStore(reducer, model)
 var AllCampaignActivity = React.createClass({
 
     componentDidMount: function() {
-        this.serverRequest = $.get("http://pathfinder/cd/master/templates", { token: "1" }, function(result) {
+        this.serverRequest = $.get("http://pathfinder/sitecore/get/templates", { token: "1" }, function(result) {
             store.dispatch(setTemplates(result.templates));
         }.bind(this));
     },
@@ -47,7 +47,7 @@ var AllCampaignActivity = React.createClass({
         var state = store.getState();
         
         return (
-            <ListPage id="MyPage" title="All campaign activities" applicationHeader="All campaign activities" createButton="Create campaign activity 123">
+            <ListPage id="MyPage" title="All campaign activities" applicationHeader="All campaign activities" createButton="Create campaign activity">
                 <Speak.AdvancedExpander id="MyExpander" text="Campaign classification filters" isOpen={true}>
                     <DataGrid idProperty="id" dataSource={state.templates} columns={state.columns} style={{height: 500}} />
                 </Speak.AdvancedExpander>

@@ -7,12 +7,12 @@ import * as Speak from '../../components/bcl-speak/bcl-speak';
 var LaunchPad = React.createClass({
     // content delivery service configuration - make Url requests and put the result in this.context.data[key], e.g. this.context.data.TitleText
     dataSources: {
-       "TitleText": "/cd/core/items/sitecore/client/Applications/Launchpad/PageSettings/TitleText?fields=Text",
-       "Buttons" : "/cd/core/items/sitecore/client/Applications/Launchpad/PageSettings/Buttons?levels=2&fields=Text, Icon[icon48x48], Link[url]" 
+       "TitleText": "/sitecore/get/core/sitecore/client/Applications/Launchpad/PageSettings/TitleText?fields=Text",
+       "Buttons" : "/sitecore/get/core/sitecore/client/Applications/Launchpad/PageSettings/Buttons?children=2&fields=Text, Icon[icon48x48], Link[url]" 
     },
     
     componentDidMount: function() {
-        this.serverRequest = $.post("http://pathfinder/cd/bundle?token=test", this.dataSources, function(data) { this.setState(data); }.bind(this));
+        this.serverRequest = $.post("http://pathfinder/sitecore/get?token=test", this.dataSources, function(data) { this.setState(data); }.bind(this));
     },
 
     render: function() {
