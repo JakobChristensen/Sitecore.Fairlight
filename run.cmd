@@ -1,1 +1,1 @@
-browser-sync start --server --startPath /sitecore/shell/client/apps/LaunchPad/ --files "sitecore/**/*"
+browser-sync start --server --startPath /sitecore/shell/client/apps/MediaLibrary/ --files "sitecore/**/*"
