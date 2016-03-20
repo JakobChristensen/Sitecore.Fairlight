@@ -1,33 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import Dashboard from '../../components/bcl-pages/Dashboard';
 import * as Speak from '../../components/bcl-speak/bcl-speak';
 
-var LaunchPad = React.createClass({
 
+var LaunchPad = React.createClass({
+    // content delivery service configuration - make Url requests and put the result in this.context.data[key], e.g. this.context.data.TitleText
+    dataSources: {
+       "TitleText": "/cd/core/items/sitecore/client/Applications/Launchpad/PageSettings/TitleText?fields=Text",
+       "Buttons" : "/cd/core/items/sitecore/client/Applications/Launchpad/PageSettings/Buttons?levels=2&fields=Text, Icon[icon48x48], Link[url]" 
+    },
+    
     componentDidMount: function() {
-        var data = {
-           "TitleText": "/cd/core/items/sitecore/client/Applications/Launchpad/PageSettings/TitleText?fields=Text",
-           "Buttons" : "/cd/core/items/sitecore/client/Applications/Launchpad/PageSettings/Buttons?levels=2&fields=Text, Icon[icon48x48], Link[url]" 
-        };
-        
-        this.serverRequest = $.post("http://pathfinder/cd/bundle?token=test", data, function(result) {
-            this.setState(result);
-        }.bind(this));
+        this.serverRequest = $.post("http://pathfinder/cd/bundle?token=test", this.dataSources, function(data) { this.setState(data); }.bind(this));
     },
 
     render: function() {
-        if (this.state == null) {
-            return null;
-        }
-        
-        var grids = this.getButtons(this.state);
+        var output = null;
 
-        var output = this.renderGrids(grids);
+        if (this.state && this.state.Buttons) {
+            var grids = this.getGrids(this.state.Buttons);
+            output = this.renderGrids(grids);
+        }
+
+        var applicationHeader = this.state && this.state.TitleText ? this.state.TitleText.fields.Text : "";
 
         return (
-            <Dashboard id="LaunchPad" applicationHeader={this.state.TitleText.fields.Text}>
+            <Dashboard id="LaunchPad" applicationHeader={applicationHeader}>
                 <div className="sc-launchpad">
                     { output }
                 </div>
@@ -88,8 +87,8 @@ var LaunchPad = React.createClass({
             </a>);
     },
 
-    getButtons: function(state) {
-        var buttons = state.Buttons;
+    // 
+    getGrids: function(buttons) {
         var grids = [];
 
         for (var groupIndex = 0; groupIndex < buttons.children.length; groupIndex++) {

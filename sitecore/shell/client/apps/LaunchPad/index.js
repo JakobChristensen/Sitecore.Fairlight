@@ -129,27 +129,29 @@ function _interopRequireDefault(obj) {
 var LaunchPad = _react2.default.createClass({
     displayName: 'LaunchPad',
 
-    componentDidMount: function componentDidMount() {
-        var data = {
-            "TitleText": "/cd/core/items/sitecore/client/Applications/Launchpad/PageSettings/TitleText?fields=Text",
-            "Buttons": "/cd/core/items/sitecore/client/Applications/Launchpad/PageSettings/Buttons?levels=2&fields=Text, Icon[icon48x48], Link[url]"
-        };
+    // content delivery service configuration - make Url requests and put the result in this.context.data[key], e.g. this.context.data.TitleText
+    dataSources: {
+        "TitleText": "/cd/core/items/sitecore/client/Applications/Launchpad/PageSettings/TitleText?fields=Text",
+        "Buttons": "/cd/core/items/sitecore/client/Applications/Launchpad/PageSettings/Buttons?levels=2&fields=Text, Icon[icon48x48], Link[url]"
+    },
 
-        this.serverRequest = $.post("http://pathfinder/cd/bundle?token=test", data, function (result) {
-            this.setState(result);
+    componentDidMount: function componentDidMount() {
+        this.serverRequest = $.post("http://pathfinder/cd/bundle?token=test", this.dataSources, function (data) {
+            this.setState(data);
         }.bind(this));
     },
 
     render: function render() {
-        if (this.state == null) {
-            return null;
+        var output = null;
+
+        if (this.state && this.state.Buttons) {
+            var grids = this.getGrids(this.state.Buttons);
+            output = this.renderGrids(grids);
         }
 
-        var grids = this.getButtons(this.state);
+        var applicationHeader = this.state && this.state.TitleText ? this.state.TitleText.fields.Text : "";
 
-        var output = this.renderGrids(grids);
-
-        return _react2.default.createElement(_Dashboard2.default, { id: 'LaunchPad', applicationHeader: this.state.TitleText.fields.Text }, _react2.default.createElement('div', { className: 'sc-launchpad' }, output));
+        return _react2.default.createElement(_Dashboard2.default, { id: 'LaunchPad', applicationHeader: applicationHeader }, _react2.default.createElement('div', { className: 'sc-launchpad' }, output));
     },
 
     renderGrids: function renderGrids(grids) {
@@ -197,8 +199,8 @@ var LaunchPad = _react2.default.createClass({
         return _react2.default.createElement('a', { href: href, className: 'sc-launchpad-item', title: text }, _react2.default.createElement('span', { className: 'icon' }, _react2.default.createElement('img', { src: icon, width: '48', height: '48', alt: text })), _react2.default.createElement('span', { className: 'sc-launchpad-text' }, text));
     },
 
-    getButtons: function getButtons(state) {
-        var buttons = state.Buttons;
+    //
+    getGrids: function getGrids(buttons) {
         var grids = [];
 
         for (var groupIndex = 0; groupIndex < buttons.children.length; groupIndex++) {
