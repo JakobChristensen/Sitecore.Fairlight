@@ -200,7 +200,7 @@ var App = _react2.default.createClass({
             "Images": "/sitecore/get/items/master?templateid={DAF085E8-602E-43A6-8299-038FF171349F}&path=/sitecore/media library/pictures&fields=*"
         };
 
-        this.serverRequest = $.post("http://pathfinder/sitecore/get?token=test", data, function (result) {
+        this.serverRequest = $.post("http://localhost:8080/sitecore/get?token=test", data, function (result) {
             this.setState(result);
         }.bind(this));
     },
