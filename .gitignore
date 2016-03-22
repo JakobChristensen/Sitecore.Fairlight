@@ -15,8 +15,6 @@
 *.csproj.sitecore.foldersync
 PrecompiledWeb/
 
-sitecore.webserver/packages/*
-
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
